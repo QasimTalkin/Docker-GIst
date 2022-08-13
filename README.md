@@ -1,4 +1,20 @@
-# All You Need to Know - Docker (1-40)
+---
+marp: true
+theme: gaia
+style: |
+  section.lead h1 {
+  text-align: center;
+  }
+  section.middle li{
+  text-align: center;
+  }
+---
+<!-- headingDivider: 2 -->
+<!--
+theme: gaia
+class: lead
+-->
+# All You Need to Know - Docker 
 
 - Containers: They are sealed, self-contained units of software that have everything needed to run a service.
 What you should know(Viewed)
@@ -9,15 +25,20 @@ What you should know(Viewed)
 
 ## 2. Using Docker
 
-**The Docker flow: Images to containers**
+### The Docker flow: Images to containers**
 
 - Image -> running container
 - `docker run docker-name`
 - `docker ps` -> get information on running container
 - image is fixed and does not change
+## The Docker flow: Containers to images**
+<style scoped>
+ {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.2em;
+  }
 
-**The Docker flow: Containers to images**
-
+</style>
 - running container -> image (files are stored in stopped container)
 - `docker ps -a` all container  
 - `docker ps -l`  last container  
@@ -29,29 +50,38 @@ What you should know(Viewed)
 ![dc run](images/dc-run.png)
 ![images file exists ](images/2021-10-25-10-26-03.png)
 
-**Running process in Docker**
+## Running process in Docker**
 
 - containers have a min proceed
 - one main process that has name
 - -d run detached container in the background
 ## 3. Under the hood
+<style scoped>
+ {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.9em;
+  }
 
+</style>
 Registries in detail
 
 - Kernel : controls and organizes storage, programs and so. allocate resources and so on 
 - docker manges kernel 
 - cgroup to group process together 
-- namespaces
-- copy on write 
-- make scripting distribution easy
 - can be client and server 
   
 - docker control socket
 ```
 docker run -ti --rm -v /var/run/docker.sock docker sh
 ```
-Docker network 
+## Docker network 
+<style scoped>
+ {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.2em;
+  }
 
+</style>
 - Ethernet : move frame on wire of wifi
 - IP layer : move packets on local network
 - routing : forwards packets between networks 
@@ -70,7 +100,7 @@ apt-get install iptables
 Exposing port is essentially port forwarding 
 
 
-**Process in Docker** 
+## Process in Docker** 
 
 - process init 1-> to many process 
 - shell -> runs other process -> continuer vanishes 
@@ -86,7 +116,14 @@ root@e63d21be00c6:/# kill 3134
 root@99fb3caf034e:/# exit?
 ```
 
-**storage in docker**
+## storage in docker**
+<style scoped>
+ {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.7em;
+  }
+
+</style>
 - actual storage 
 - forms in logical groups 
 - filesystem : which file belongs where 
@@ -98,12 +135,16 @@ root@99fb3caf034e:/# exit?
   - containers are indigent of storage engine 
   - some have limited layers 
 - get the right mount order correct 
-**save abd load docker images**
-  
+## save abd load docker images**
+  <style scoped>
+ {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.8em;
+  }
+
+</style>
 1. save imaged locally 
 ![docker save](gitDocs/docker-save.png)
-2. remove images 
-![remove images](gitDocs/remove%20images.png) 
-3. load Images 
+2. load Images 
 ![load images](gitDocs/load%20images.png)
 
