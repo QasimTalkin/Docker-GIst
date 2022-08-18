@@ -1,0 +1,26 @@
+version: "3.9" 
+
+services:
+  mystoredb:
+    build:
+      context: .
+      args:
+        - MYSQL_ROOT_PASSWORD=secret # no spaces around the equal sign
+        - MYSQL_DATABASE=mystore
+        - MYSQL_USER=mystore
+        - MYSQL_PASSWORD=mystore
+    environment:
+      -runtime_env=dev
+  database:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=mystore
+      - MYSQL_USER=mystore
+      - MYSQL_PASSWORD=mystore
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - mystore

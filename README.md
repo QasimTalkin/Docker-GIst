@@ -74,6 +74,118 @@ Registries in detail
 ```
 docker run -ti --rm -v /var/run/docker.sock docker sh
 ```
+
+# Docker Comose basics 
+* docker comose is a tool for defining and running multi-container Docker applications using single configuration file
+
+# configuration
+* declarative procedure to execute 
+* they allow you to define a set of services that make up your app
+* configuration are self documenting ans easy to manage
+
+# Writing a docker compose configuration
+* create a configuration file in `yml` format
+* name it `docker-compose.yml`
+* ymal: Yet Another Markup Language, a human-readable data-serialization language used for configuration files
+* many images are available on docker hub
+```yml
+version: '3.7' # version of docker compose
+services: # services to run
+  store: # name of service
+    build: . # image to use, current directory
+    database:
+      image: postgres:latest # this will be pulled from docker hub
+```
+
+# Docker compose commands
+All docker compose commands are run from the directory containing the `docker-compose.yml` file
+* `docker-compose up` - start the services # build -> create -> start
+  * specify the service name to start only that service `docker-compose up store`
+* `docker-compose down` - stop the services, and delete all running containers # stop -> remove `stop & rm`
+* `docker-compose ps` - list the services
+* `docker-compose logs` - show the logs
+* `docker-compose exec` - run a command in a service
+* `docker-compose build` - build the services
+* `docker-compose restart` - restart the services # stop -> start `stop & start`
+* `docker-compose --help` - show the help
+
+
+# Build arguments vs environment variables
+* build arguments are used to pass values to the build process
+* environment variables are used to pass values to the running container
+
+* to specify a build argument, use the `--build-arg` flag
+  * we will use `context` to pass the build argument
+    * and add arguments using `arg` in the `Dockerfile`
+
+* to specify an environment variable, use the `environment` key in the `docker-compose.yml` file
+  * we will use `environment` to pass the environment variable
+    * and add environment variables using `env` in the `Dockerfile`
+```yml
+version: '3.7'
+services:
+  store:
+    build:
+      context: .
+      args:
+        - BUILD_DATE=${BUILD_DATE}
+        - VCS_REF=${VCS_REF}
+        - VERSION=${VERSION}
+    environment:
+      - BUILD_DATE=${BUILD_DATE}
+      - VCS_REF=${VCS_REF}
+      - VERSION=${VERSION}
+```
+
+
+# mounting a volume
+* target: the path inside the container where the volume will be mounted
+* `volume` is a directory on the host machine
+* `source` is the path to the directory on the host machine
+  * where the dump is 
+  * `source = /home/username/dump`
+
+# file path
+* `./` is the current directory
+* `../` is the parent directory, one level above doc config file
+* `/` is the root directory
+  
+# access mode
+* `ro` is read-only
+* `rw` is read-write
+setting source and target to the same path will mount the volume in the same path inside the container
+`source:taget:mode`
+```yml
+  volumes:
+    - ./dump:/dump:rw
+```
+# named volume
+* named volumes are created by docker, name store as Qasim Store
+```yml
+  volumes:
+    - store:/dump:rw
+    - qasim-store:/dump:rw
+volumes:
+ qasim-store:
+```
+
+# exposing ports
+* `ports` is the port on the host machine
+* each container has its own network stack, so the ports on the host machine are not the same as the ports inside the container
+* for qasim-store, the port inside the container is 80, but the port on the host machine is 8080
+```yml
+  ports:
+    - 8080:80 # host:container {from port to port}
+```
+
+# set up order
+* `depends_on` is used to set up the order in which the services are started
+* docker compose up will start the services in the order they are defined in the `docker-compose.yml` file
+```yml
+  depends_on:
+    - database
+```
+
 ## Docker network 
 <style scoped>
  {
